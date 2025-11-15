@@ -203,9 +203,9 @@ function updateTime(){
   const d = n.getDate();
   const h = n.getHours();
   const mi = String(n.getMinutes()).padStart(2,'0');
+  const s = String(n.getSeconds()).padStart(2,'0');   // ← 추가
 
-  // left/top을 CSS변수로 조절했기 때문에 좌표는 CSS로 관리
-  timeDisplay.textContent = `${y}년 ${mo}월 ${d}일 ${h}시 ${mi}분`;
+  timeDisplay.textContent = `${y}년 ${mo}월 ${d}일 ${h}시 ${mi}분 ${s}초`;  // ← 초단위 포함
 }
 updateTime();
 setInterval(updateTime, 1000);
