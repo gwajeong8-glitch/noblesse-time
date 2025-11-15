@@ -197,16 +197,16 @@ fillSidos();
 
 /* ========== 시간 표시 (브라우저 로컬 시간 사용) ========== */
 function updateTime(){
-  const n = new Date();
-  const y = n.getFullYear();
-  const mo = n.getMonth()+1;
-  const d = n.getDate();
-  const h = n.getHours();
-  const mi = String(n.getMinutes()).padStart(2,'0');
-  const sec = String(now.getSeconds()).padStart(2, "0");
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth()+1).padStart(2,"0");
+    const day = String(now.getDate()).padStart(2,"0");
+    const hour = String(now.getHours()).padStart(2,"0");
+    const min = String(now.getMinutes()).padStart(2,"0");
+    const sec = String(now.getSeconds()).padStart(2,"0");
 
-  // left/top을 CSS변수로 조절했기 때문에 좌표는 CSS로 관리
-  timeDisplay.textContent = `${y}년 ${mo}월 ${d}일 ${h}시 ${mi}분 ${sec}초`;
+    document.getElementById("time").textContent =
+        `${year}년 ${month}월 ${day}일 ${hour}시 ${min}분 ${sec}초`;
 }
 updateTime();
 setInterval(updateTime, 1000);
