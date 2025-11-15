@@ -4,27 +4,37 @@
 <meta charset="UTF-8">
 
 <style>
-    body {
-        margin: 0;
-        padding: 0;
+
+    /* 전체 화면 고정 컨테이너 */
+    .wrap {
+        position: relative;
         width: 1024px;
         height: 1024px;
-        background-image: url("background.png"); /* 네 이미지 파일 */
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        position: relative;
-        font-family: "JunMyeongjo", serif;
+        margin: 0 auto;
         overflow: hidden;
     }
 
-    /* 폰트 등록 */
+    /* 배경 이미지 정확히 표시 */
+    .bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1024px;
+        height: 1024px;
+        background-image: url("background.png");
+        background-size: contain;  /* 확대 방지 */
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 1;
+    }
+
+    /* 폰트 */
     @font-face {
         font-family: "JunMyeongjo";
         src: url("JunMyeongjo.ttf");
     }
 
-    /* 시도/시군구 선택 박스 */
+    /* 시도/시군구 선택 */
     #region1, #region2 {
         position: absolute;
         top: 390px;
@@ -37,53 +47,58 @@
         padding-left: 10px;
         font-family: "JunMyeongjo";
         appearance: none;
+        z-index: 2;
     }
 
-    #region1 {
-        left: 260px;
-    }
+    #region1 { left: 260px; }
+    #region2 { left: 500px; }
 
-    #region2 {
-        left: 500px;
-    }
-
-    /* 시간 표시 */
+    /* 시간 */
     #time {
         position: absolute;
-        top: 650px;     /* 이미지 하트 아래쪽 */
+        top: 650px;
         left: 50%;
         transform: translateX(-50%);
         color: #F6EAD2;
         font-size: 28px;
         white-space: nowrap;
-        font-family: "JunMyeongjo", serif;
+        font-family: "JunMyeongjo";
+        z-index: 2;
     }
 
 </style>
 </head>
 <body>
 
-<!-- 시도/시군구 선택 -->
-<select id="region1"></select>
-<select id="region2"></select>
+<div class="wrap">
 
-<!-- 실시간 시간 표시 -->
-<div id="time"></div>
+    <!-- 배경 이미지 -->
+    <div class="bg"></div>
+
+    <!-- 시도/시군구 -->
+    <select id="region1"></select>
+    <select id="region2"></select>
+
+    <!-- 시간 -->
+    <div id="time"></div>
+
+</div>
+
 
 <script>
-
-/* ------------------------------
-    한국 시도 + 시군구 데이터
-   ------------------------------ */
-
+/* 시도/시군구 데이터 */
 const regionData = {
-    "서울특별시": ["강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"],
+    "서울특별시": ["강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구",
+    "노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구",
+    "송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"],
 
-    "부산광역시": ["강서구","금정구","기장군","남구","동래구","부산진구","북구","사상구","사하구","서구","수영구","연제구","영도구","중구","해운대구"],
+    "부산광역시": ["강서구","금정구","기장군","남구","동래구","부산진구","북구","사상구",
+    "사하구","서구","수영구","연제구","영도구","중구","해운대구"],
 
     "대구광역시": ["남구","달서구","달성군","동구","북구","서구","수성구","중구"],
 
-    "인천광역시": ["강화군","계양구","남동구","동구","미추홀구","부평구","서구","연수구","옹진군","중구"],
+    "인천광역시": ["강화군","계양구","남동구","동구","미추홀구","부평구","서구","연수구",
+    "옹진군","중구"],
 
     "광주광역시": ["광산구","남구","동구","북구","서구"],
 
@@ -93,48 +108,43 @@ const regionData = {
 
     "세종특별자치시": ["세종시"],
 
-    "경기도": [
-        "가평군","고양시","과천시","광명시","광주시","구리시","군포시","김포시","남양주시",
-        "동두천시","부천시","성남시","수원시","시흥시","안산시","안성시","안양시","양주시",
-        "양평군","여주시","연천군","오산시","용인시","의왕시","의정부시","이천시","파주시",
-        "평택시","포천시","하남시","화성시"
-    ],
+    "경기도": ["가평군","고양시","과천시","광명시","광주시","구리시","군포시","김포시","남양주시",
+    "동두천시","부천시","성남시","수원시","시흥시","안산시","안성시","안양시","양주시","양평군",
+    "여주시","연천군","오산시","용인시","의왕시","의정부시","이천시","파주시","평택시","포천시",
+    "하남시","화성시"],
 
-    "강원특별자치도": [
-        "강릉시","고성군","동해시","삼척시","속초시","양구군","양양군","영월군","원주시",
-        "인제군","정선군","철원군","춘천시","태백시","평창군","홍천군","화천군","횡성군"
-    ],
+    "강원특별자치도": ["강릉시","고성군","동해시","삼척시","속초시","양구군","양양군","영월군","원주시",
+    "인제군","정선군","철원군","춘천시","태백시","평창군","홍천군","화천군","횡성군"],
 
-    "충청북도": ["괴산군","단양군","보은군","영동군","옥천군","음성군","제천시","진천군","청원군","청주시","충주시"],
+    "충청북도": ["괴산군","단양군","보은군","영동군","옥천군","음성군","제천시","진천군","청원군",
+    "청주시","충주시"],
 
-    "충청남도": ["계룡시","공주시","금산군","논산시","당진시","보령시","부여군","서산시","서천군","아산시","예산군","천안시","청양군","태안군","홍성군"],
+    "충청남도": ["계룡시","공주시","금산군","논산시","당진시","보령시","부여군","서산시","서천군",
+    "아산시","예산군","천안시","청양군","태안군","홍성군"],
 
-    "전북특별자치도": ["고창군","군산시","김제시","남원시","무주군","부안군","순창군","완주군","익산시","임실군","장수군","전주시","정읍시","진안군"],
+    "전북특별자치도": ["고창군","군산시","김제시","남원시","무주군","부안군","순창군","완주군",
+    "익산시","임실군","장수군","전주시","정읍시","진안군"],
 
     "전라남도": ["강진군","고흥군","곡성군","광양시","구례군","나주시","담양군","목포시","무안군",
-        "보성군","순천시","신안군","여수시","영광군","영암군","완도군","장성군","장흥군",
-        "진도군","함평군","해남군","화순군"],
+    "보성군","순천시","신안군","여수시","영광군","영암군","완도군","장성군","장흥군",
+    "진도군","함평군","해남군","화순군"],
 
     "경상북도": ["경산시","경주시","고령군","구미시","군위군","김천시","문경시","봉화군","상주시",
-        "성주군","안동시","영덕군","영양군","영주시","영천시","예천군","울릉군","울진군",
-        "의성군","청도군","청송군","칠곡군","포항시"],
+    "성주군","안동시","영덕군","영양군","영주시","영천시","예천군","울릉군","울진군",
+    "의성군","청도군","청송군","칠곡군","포항시"],
 
     "경상남도": ["거제시","거창군","고성군","김해시","남해군","밀양시","사천시","산청군","양산시",
-        "의령군","진주시","창녕군","창원시","통영시","하동군","함안군","함양군","합천군"],
+    "의령군","진주시","창녕군","창원시","통영시","하동군","함안군","함양군","합천군"],
 
     "제주특별자치도": ["서귀포시","제주시"]
 };
 
-
-/* ------------------------------
-    시도 선택 → 시군구 자동 변경
-   ------------------------------ */
-
+/* 시도 자동 로드 */
 const region1 = document.getElementById("region1");
 const region2 = document.getElementById("region2");
 
 function loadRegion1() {
-    region1.innerHTML = "<option selected>시·도 선택</option>";
+    region1.innerHTML = "<option>시·도 선택</option>";
     Object.keys(regionData).forEach(sido => {
         const op = document.createElement("option");
         op.value = sido;
@@ -144,29 +154,25 @@ function loadRegion1() {
 }
 
 function loadRegion2(sido) {
-    region2.innerHTML = "<option selected>시·군·구 선택</option>";
-    regionData[sido].forEach(item => {
+    region2.innerHTML = "<option>시·군·구 선택</option>";
+    regionData[sido].forEach(s => {
         const op = document.createElement("option");
-        op.value = item;
-        op.textContent = item;
+        op.value = s;
+        op.textContent = s;
         region2.appendChild(op);
     });
 }
 
-region1.addEventListener("change", () => {
+region1.addEventListener("change", ()=>{
     loadRegion2(region1.value);
 });
 
 loadRegion1();
 
 
-/* ------------------------------
-        시간 자동 업데이트
-   ------------------------------ */
-
+/* 시간 */
 function updateTime(){
     const now = new Date();
-
     const y = now.getFullYear();
     const m = String(now.getMonth()+1).padStart(2,"0");
     const d = String(now.getDate()).padStart(2,"0");
@@ -174,7 +180,7 @@ function updateTime(){
     const mi = String(now.getMinutes()).padStart(2,"0");
 
     document.getElementById("time").textContent =
-        `${y}년 ${m}월 ${d}일  ${h}시 ${mi}분`;
+        `${y}년 ${m}월 ${d}일 ${h}시 ${mi}분`;
 }
 
 setInterval(updateTime, 1000);
