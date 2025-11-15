@@ -6,25 +6,24 @@
 <title>Noblesse Time (완성형)</title>
 
 <style>
-  /* ============= 설정값 (원하면 여기 숫자만 바꿔서 미세조정) ============= */
   :root{
-    --canvas-w: 1024px;       /* 캔버스 너비(이미지 너비) */
-    --canvas-h: 1024px;       /* 캔버스 높이(이미지 높이) */
+    --canvas-w: 1024px;
+    --canvas-h: 1024px;
 
-    /* 픽셀 위치 (이미지 기준) - 필요하면 여기 값만 조정 */
-    --select-left-1: 260px;   /* 왼쪽(경기도) select left */
-    --select-left-2: 540px;   /* 오른쪽(가평군) select left */
-    --select-top: 410px;      /* select top */
+    --select-left-1: 260px;
+    --select-left-2: 540px;
+    --select-top: 410px;
 
     --select-width: 210px;
     --select-height: 55px;
 
-    --time-left: 300px;       /* 시간 text left (이미지 기준) */
-    --time-top: 530px;        /* 시간 text top */
+    --time-left: 300px;
+    --time-top: 530px;
     --time-font-size: 38px;
+
     --time-color: #F6EAD2;
+    --select-text: #FFF5D9;
   }
-  /* ================================================================== */
 
   html,body{
     height:100%;
@@ -33,29 +32,24 @@
     font-family: "Nanum Myeongjo", "KoPub Batang", serif;
   }
 
-  /* 캔버스: 이미지와 모든 UI를 이 안에 놓음 (정확한 1:1 매칭용) */
   .canvas {
     width: var(--canvas-w);
     height: var(--canvas-h);
     margin: 0 auto;
     position: relative;
     overflow: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* 배경 이미지를 img 태그로 넣어 정확한 비율/픽셀 보장 */
   .bg {
     position:absolute;
     left:0; top:0;
-    width:100%;
-    height:100%;
+    width:100%; height:100%;
     z-index:0;
     pointer-events:none;
   }
   .bg img { width:100%; height:100%; object-fit:cover; display:block; }
 
-  /* 공통 select 스타일 (이미지 속 금색 테두리 느낌) */
+  /* ======================= 가독성 개선 적용 ========================== */
   .canvas select {
     position:absolute;
     z-index:5;
@@ -63,54 +57,48 @@
     height:var(--select-height);
     padding-left:18px;
     font-size:22px;
-    color: var(--time-color);
-    background: rgba(0,0,0,0.18);
+
+    color: var(--select-text);       /* ← 글씨 더 밝게 */
+    background: rgba(0,0,0,0.35);    /* ← 배경 더 어둡게 */
     border: 2px solid rgba(200,167,107,0.95);
+
     border-radius:8px;
     outline:none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+    appearance:none;
     box-shadow: 0 2px 10px rgba(0,0,0,0.35) inset;
     font-weight:600;
   }
 
-  /* 개별 좌표 (기본값은 이미지에서 측정한 값) */
   #sido { left: var(--select-left-1); top: var(--select-top); }
   #sigungu { left: var(--select-left-2); top: var(--select-top); }
 
-  /* 시간 텍스트 (절대좌표) */
   #timeDisplay{
     position:absolute;
     left: var(--time-left);
     top: var(--time-top);
-    transform: translateX(0); /* left는 이미지 기준 픽셀값 사용 */
     z-index:6;
     color: var(--time-color);
     font-size: var(--time-font-size);
     font-weight:700;
     text-shadow: 0 3px 12px rgba(0,0,0,0.6);
     white-space: nowrap;
-    font-family: "Nanum Myeongjo", serif;
   }
 
-  /* 작은 화면에서 캔버스가 브라우저보다 클 때 스케일 다운 (선택사항) */
   @media (max-width:1100px){
-    /* 페이지 가로가 작으면 캔버스를 브라우저 너비에 맞게 축소해서 표시 */
-    .canvas { transform-origin: top center; transform: scale(calc( (100vw - 40px) / 1024 )); margin-top:20px; }
-    /* z-index들은 그대로 유지되므로 좌표가 시각적으로 동일하게 보임 (단, 픽셀 단위 고정 아님) */
+    .canvas {
+      transform-origin: top center;
+      transform: scale(calc((100vw - 40px) / 1024));
+      margin-top:20px;
+    }
   }
 </style>
 </head>
 <body>
 
-<!-- 캔버스 -->
 <div class="canvas" id="canvas">
 
-  <!-- 배경 이미지를 img로 넣음: 정확한 픽셀 보장 -->
   <div class="bg"><img src="background.png" alt="background"></div>
 
-  <!-- 실제 UI: select 2개와 시간 텍스트 (절대좌표) -->
   <select id="sido" aria-label="시도 선택"></select>
   <select id="sigungu" aria-label="시군구 선택"></select>
 
@@ -119,10 +107,6 @@
 </div>
 
 <script>
-/* ------------------------------
-  regionData: 시도 -> 시군구 (완전한 데이터)
-  필요하면 더 추가/수정 가능
--------------------------------*/
 const regionData = {
   "서울특별시": ["종로구","중구","용산구","성동구","광진구","동대문구","중랑구","성북구","강북구","도봉구","노원구","은평구","서대문구","마포구","양천구","강서구","구로구","금천구","영등포구","동작구","관악구","서초구","강남구","송파구","강동구"],
   "부산광역시": ["중구","서구","동구","영도구","부산진구","동래구","남구","북구","해운대구","사하구","금정구","강서구","연제구","수영구","사상구","기장군"],
@@ -143,59 +127,60 @@ const regionData = {
   "제주특별자치도": ["제주시","서귀포시"]
 };
 
-/* ========== UI 요소 참조 ========== */
 const sido = document.getElementById('sido');
 const sigungu = document.getElementById('sigungu');
 const timeDisplay = document.getElementById('timeDisplay');
 
-/* ========== 시도 목록 채우기 ========== */
 function fillSidos(){
-  sido.innerHTML = ''; 
-  const placeholder = document.createElement('option');
-  placeholder.textContent = '시·도 선택';
-  placeholder.value = '';
-  placeholder.selected = true;
-  placeholder.disabled = true;
-  sido.appendChild(placeholder);
+  sido.innerHTML = '';
+  const ph = document.createElement('option');
+  ph.textContent = '시·도 선택';
+  ph.value = '';
+  ph.selected = true;
+  ph.disabled = true;
+  sido.appendChild(ph);
 
   Object.keys(regionData).forEach(s => {
-    const o = document.createElement('option'); o.value = s; o.textContent = s;
+    const o = document.createElement('option');
+    o.value = s;
+    o.textContent = s;
     sido.appendChild(o);
   });
 }
 
-/* ========== 시군구 채우기 ========== */
 function fillSigungu(sidoName){
   sigungu.innerHTML = '';
-  if(!sidoName || !regionData[sidoName]) {
-    const p = document.createElement('option'); p.textContent = '시·군·구 선택'; p.disabled = true; p.selected = true;
-    sigungu.appendChild(p);
+  if(!sidoName || !regionData[sidoName]){
+    const def = document.createElement('option');
+    def.textContent = '시·군·구 선택';
+    def.disabled = true;
+    def.selected = true;
+    sigungu.appendChild(def);
     return;
   }
   regionData[sidoName].forEach(g => {
-    const o = document.createElement('option'); o.value = g; o.textContent = g;
+    const o = document.createElement('option');
+    o.value = g;
+    o.textContent = g;
     sigungu.appendChild(o);
   });
 }
 
-/* 이벤트 바인딩 */
-sido.addEventListener('change', ()=> fillSigungu(sido.value));
+sido.addEventListener('change', () => fillSigungu(sido.value));
 
-/* 초기화: 시도 목록 채우기 + 기본값 경기도/가평군(있으면) */
 fillSidos();
-(function initDefault(){
-  const defaultSido = '경기도';
-  const defaultG = '가평군';
-  if(Object.keys(regionData).includes(defaultSido)){
-    sido.value = defaultSido;
-    fillSigungu(defaultSido);
-    if(Array.isArray(regionData[defaultSido]) && regionData[defaultSido].includes(defaultG)){
-      sigungu.value = defaultG;
-    }
+
+/* 기본값 — 경기도 / 가평군 */
+(function(){
+  const ds = "경기도";
+  const dg = "가평군";
+  if(regionData[ds]){
+    sido.value = ds;
+    fillSigungu(ds);
+    if(regionData[ds].includes(dg)) sigungu.value = dg;
   }
 })();
 
-/* ========== 시간 표시 (브라우저 로컬 시간 사용) ========== */
 function updateTime(){
   const n = new Date();
   const y = n.getFullYear();
@@ -203,13 +188,12 @@ function updateTime(){
   const d = n.getDate();
   const h = n.getHours();
   const mi = String(n.getMinutes()).padStart(2,'0');
-  const s = String(n.getSeconds()).padStart(2,'0');   // ← 추가
-
-  timeDisplay.textContent = `${y}년 ${mo}월 ${d}일 ${h}시 ${mi}분 ${s}초`;  // ← 초단위 포함
+  const s = String(n.getSeconds()).padStart(2,'0');
+  timeDisplay.textContent = `${y}년 ${mo}월 ${d}일 ${h}시 ${mi}분 ${s}초`;
 }
 updateTime();
 setInterval(updateTime, 1000);
-
 </script>
+
 </body>
 </html>
