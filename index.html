@@ -1,34 +1,131 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NOBLESSE</title>
+<meta charset="UTF-8">
+<title>Noblesse Time</title>
 
 <style>
     body {
         margin: 0;
         padding: 0;
-        background: url("background.png") no-repeat center top;
-        background-size: cover;
-        font-family: "Pretendard", sans-serif;
+        background: #000;
         overflow-x: hidden;
+        font-family: "KoPub Batang", "Nanum Myeongjo", serif;
     }
 
-    /* 전체 가운데 정렬 박스 */
+    /* 배경 이미지를 전체 고정 */
+    .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: url("nobless-bg.png");
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+    }
+
+    /* 전체 레이아웃 중앙 정렬 */
     .container {
+        position: relative;
         width: 100%;
-        text-align: center;
-        margin-top: 310px; /* 경기도 / 가평군의 실제 위치 */
+        height: 100vh;
     }
 
-    /* 시/도, 군 선택 박스 */
+    /* 기준 해상도: 1920×1080 기준으로 좌표 맞춤 */
+    .ui-wrapper {
+        position: absolute;
+        top: 260px;       /* 이미지 기준 정확한 위치 */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;
+        text-align: center;
+    }
+
+    /* ----- 셀렉트 박스 ----- */
     .select-row {
         display: flex;
         justify-content: center;
-        gap: 70px; /* 좌우 간격 조정 */
-        margin-bottom: 80px;
+        gap: 110px;
+        margin-bottom: 40px;
     }
 
     select {
-        background: rgba(0, 0, 0
+        width: 240px;
+        height: 55px;
+        padding-left: 20px;
+        font-size: 22px;
+        background: transparent;
+        border: 2px solid #C8A96A;
+        border-radius: 8px;
+        color: #F6EAD2;
+        appearance: none;
+        outline: none;
+        font-weight: bold;
+        text-shadow: 0px 0px 3px #000;
+    }
+
+    option {
+        background: #000;
+        color: #fff;
+    }
+
+    /* ----- 시간 텍스트 ----- */
+    .time-text {
+        font-size: 34px;
+        color: #F6EAD2;
+        font-weight: bold;
+        margin-top: 20px;
+
+        /* 이미지 위치 정확히 맞춤 */
+        position: relative;
+        top: -10px;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="background"></div>
+
+<div class="container">
+    <div class="ui-wrapper">
+
+        <!-- 시/도, 군/구 선택 -->
+        <div class="select-row">
+            <select id="sido">
+                <option value="경기도">경기도</option>
+            </select>
+
+            <select id="gungu">
+                <option value="가평군">가평군</option>
+            </select>
+        </div>
+
+        <!-- 시간 표시 -->
+        <div id="timeDisplay" class="time-text"></div>
+
+    </div>
+</div>
+
+<script>
+    /* 자동 시간 표시 */
+    function updateTime() {
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = now.getMonth() + 1;
+        const d = now.getDate();
+        const h = now.getHours();
+        const min = now.getMinutes().toString().padStart(2, "0");
+
+        document.getElementById("timeDisplay").innerText =
+            `${y}년 ${m}월 ${d}일 ${h}시 ${min}분`;
+    }
+
+    setInterval(updateTime, 1000);
+    updateTime();
+</script>
+
+</body>
+</html>
