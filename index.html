@@ -205,7 +205,7 @@ function updateTime(){
   const mi = String(n.getMinutes()).padStart(2,'0');
 
   // left/top을 CSS변수로 조절했기 때문에 좌표는 CSS로 관리
-  timeDisplay.textContent = `${y}년 ${mo}월 ${d}일 ${h}시 ${mi}분`;
+  timeDisplay.textContent = `${y}년 ${mo}월 ${d}일 ${h}시 ${mi}분 ${sec}초`;
 }
 updateTime();
 setInterval(updateTime, 1000);
