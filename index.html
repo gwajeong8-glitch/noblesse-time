@@ -8,29 +8,32 @@
     body {
         margin: 0;
         padding: 0;
-        background: #000;
+        background: url('background.png') no-repeat center center fixed;
+        background-size: cover;
         font-family: "KoPub Batang", "Nanum Myeongjo", serif;
         color: #F6EAD2;
         display: flex;
         justify-content: center;
         align-items: center;
+        height: 100vh;
     }
 
-    /* 전체 레이아웃 컨테이너 */
+    /* 전체 레이아웃 */
     .wrapper {
         position: relative;
-        width: 1024px;
-        height: 1024px;
-        background-image: url('background.png');
-        background-size: cover;
-        background-position: center;
+        width: 100%;
+        max-width: 1024px;
+        height: 100%;
+        max-height: 1024px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     }
 
     /* 시·도 선택 */
     .selector-area {
-        position: absolute;
-        top: 360px;
-        width: 100%;
+        margin-top: 260px;
         text-align: center;
     }
 
@@ -44,13 +47,11 @@
         color: #F6EAD2;
     }
 
-    /* 하트 아래 시간 텍스트 */
+    /* 시간 표시 */
     .time-area {
-        position: absolute;
-        top: 610px; /* 하트 바로 아래 정확한 위치 */
-        width: 100%;
+        margin-top: 260px;
         text-align: center;
-        font-size: 28.4px;
+        font-size: 28px;
         font-weight: 600;
         color: #F6EAD2;
         text-shadow: 0px 0px 10px rgba(0,0,0,0.6);
@@ -61,13 +62,13 @@
 
 <div class="wrapper">
 
-    <!-- 지역 선택 UI -->
+    <!-- 지역 선택 -->
     <div class="selector-area">
         <select id="sido"></select>
         <select id="sigungu"></select>
     </div>
 
-    <!-- 시간 표시 영역 -->
+    <!-- 시간 표시 -->
     <div class="time-area" id="timeDisplay">시간 로딩중...</div>
 
 </div>
@@ -75,7 +76,7 @@
 <script>
 /* ---------------------------
    17개 시·도 데이터
--------------------------------*/
+---------------------------*/
 const regionData = {
     "서울특별시": ["종로구","중구","용산구","성동구","광진구","동대문구","중랑구","성북구","강북구","도봉구","노원구","은평구","서대문구","마포구","양천구","강서구","구로구","금천구","영등포구","동작구","관악구","서초구","강남구","송파구","강동구"],
 
@@ -113,7 +114,7 @@ const regionData = {
 };
 
 /* ---------------------------
-   시·도/시·군·구 선택 출력
+   시·도/시·군·구 선택 동작
 ---------------------------*/
 const sidoSelect = document.getElementById("sido");
 const sigunguSelect = document.getElementById("sigungu");
@@ -139,7 +140,7 @@ sidoSelect.addEventListener("change", updateSigungu);
 updateSigungu();
 
 /* ---------------------------
-   시간 자동 표시
+   시간 자동 업데이트
 ---------------------------*/
 function updateTime() {
     const now = new Date();
