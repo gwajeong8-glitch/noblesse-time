@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Noblesse Time (텍스트 분리형)</title>
+<title>Noblesse Time (풀 텍스트 버전)</title>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
@@ -57,13 +57,12 @@
         object-position: 75% center; 
     }
 
-    /* ======================= 투명 Select 및 스타일 ========================== */
+    /* ======================= Select 스타일 ========================== */
     .canvas select {
         position:absolute;
         z-index:10; 
         width:var(--select-width);
         height:var(--select-height);
-        
         background: transparent;
         color: transparent; 
         border: none;
@@ -75,15 +74,13 @@
     #sido { left: var(--select-left-1); top: var(--select-top); }
     #sigungu { left: var(--select-left-2); top: var(--select-top); }
 
-
-    /* ======================= Display Div (보여지는 부분) ========================== */
+    /* ======================= Display Box ========================== */
     .display-box {
         position: absolute;
         z-index: 5; 
         width: var(--select-width);
         height: var(--select-height);
         box-sizing: border-box;
-        
         color: var(--select-text);
         background: rgba(0,0,0,0.35);
         border: 2px solid rgba(200,167,107,0.95);
@@ -92,12 +89,10 @@
         text-align: center;
         font-size: 28px;
         line-height: var(--select-height); 
-        
         box-shadow:
             0 0 10px rgba(255, 230, 180, 0.4),
             inset 0 0 10px rgba(255, 230, 180, 0.25);
     }
-    
     #sidoDisplay { left: var(--select-left-1); top: var(--select-top); }
     #sigunguDisplay { left: var(--select-left-2); top: var(--select-top); }
     
@@ -114,21 +109,36 @@
         white-space: nowrap;
     }
 
-    /* 🔥 [여기입니다!] 하단 안내 문구 스타일 */
+    /* 🔥 [1] 노란색 강조 문구 */
     #infoMessage {
         position: absolute;
         width: 100%;
         text-align: center;
-        
-        /* ▼▼▼ 위치 조절은 이 숫자를 바꾸세요! ▼▼▼ */
-        top: 725px; 
-        
+        /* 위치 조절: top 숫자 변경 */
+        top: 710px; 
         z-index: 6;
+        
         font-size: 26px;
         font-weight: 600;
-        color: #FFD700; /* 노란색 */
-        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        color: #FFD700; /* 금색/노란색 */
+        text-shadow: 0 2px 6px rgba(0,0,0,0.9); /* 검은 그림자 진하게 */
         white-space: nowrap;
+    }
+
+    /* 🔥 [2] 새로 추가된 하얀색 설명 문구 */
+    #subMessage {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        /* 노란 글씨보다 아래에 위치 */
+        top: 760px; 
+        z-index: 6;
+        
+        font-size: 20px; /* 글씨 크기 조금 작게 */
+        line-height: 1.6; /* 줄 간격 */
+        font-weight: 500;
+        color: #FFFFFF; /* 흰색 */
+        text-shadow: 0 2px 5px rgba(0,0,0,0.9);
     }
 
     /* PNG 저장 버튼 */
@@ -178,6 +188,11 @@
     <div id="timeDisplay" aria-live="polite">시간 로딩중...</div>
     
     <div id="infoMessage">완벽한 인연을 찾아.. 매칭 진행 중! 잠시만 기다려주세요</div>
+
+    <div id="subMessage">
+        잠시만 기다려주시면 노블레스가<br>
+        당신의 특별한 인연을 찾아드립니다.
+    </div>
 
 </div>
 
