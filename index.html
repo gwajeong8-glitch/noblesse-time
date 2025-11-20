@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Noblesse Time (최종 완성본 - select 글씨색 수정)</title>
+<title>Noblesse Time (최종 완성본 - select 글씨색 수정 완료)</title>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
@@ -64,9 +64,8 @@
         width:var(--select-width);
         height:var(--select-height);
         background: transparent;
-        /* 👇👇👇 이 부분을 추가/수정합니다! 👇👇👇 */
-        color: #000; /* 글씨를 검은색으로 */ 
-        /* 기존의 color: transparent;는 삭제하거나 주석 처리하세요. */
+        color: transparent; /* Display Box 겹치기를 위해 유지 */
+        color: #000 !important; /* 드롭다운 목록 글자색을 검은색으로 강제 */
         border: none;
         outline: none;
         font-size: 28px; 
