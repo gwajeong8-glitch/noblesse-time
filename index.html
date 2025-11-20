@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Noblesse Time (최종 완성본 - bok.png 경로 적용)</title>
+<title>Noblesse Time (최종 완성본 - select 글씨색 수정)</title>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
@@ -64,7 +64,9 @@
         width:var(--select-width);
         height:var(--select-height);
         background: transparent;
-        color: transparent; 
+        /* 👇👇👇 이 부분을 추가/수정합니다! 👇👇👇 */
+        color: #000; /* 글씨를 검은색으로 */ 
+        /* 기존의 color: transparent;는 삭제하거나 주석 처리하세요. */
         border: none;
         outline: none;
         font-size: 28px; 
@@ -177,7 +179,7 @@
 
 <div class="canvas" id="canvas">
 
-    <div class="bg"><img src="backgrouds.png" alt="backgrounds"></div>
+    <div class="bg"><img src="bok.png" alt="backgrounds"></div>
 
     <div id="sidoDisplay" class="display-box">시·도 선택</div>
     <div id="sigunguDisplay" class="display-box">시·군·구 선택</div>
@@ -199,7 +201,7 @@
 <script>
 const regionData = {
     "서울특별시": ["종로구","중구","용산구","성동구","광진구","동대문구","중랑구","성북구","강북구","도봉구","노원구","은평구","서대문구","마포구","양천구","강서구","구로구","금천구","영등포구","동작구","관악구","서초구","강남구","송파구","강동구"],
-    "부산광역시": ["중구","서구","동구","영도구","부산진구","동래구","남구","북구","해운구","사하구","금정구","강서구","연제구","수영구","사상구","기장군"],
+    "부산광역시": ["중구","서구","동구","영도구","부산진구","동래구","남구","북구","해운대구","사하구","금정구","강서구","연제구","수영구","사상구","기장군"],
     "대구광역시": ["중구","동구","서구","남구","북구","수성구","달서구","달성군"],
     "인천광역시": ["중구","동구","미추홀구","연수구","남동구","부평구","계양구","서구","강화군","옹진군"],
     "광주광역시": ["동구","서구","남구","북구","광산구"],
