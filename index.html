@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Noblesse Time (최종 완성본)</title>
+<title>Noblesse Time (최종 완성본 - select 글씨색 수정)</title>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
@@ -64,7 +64,9 @@
         width:var(--select-width);
         height:var(--select-height);
         background: transparent;
-        color: transparent; 
+        /* 👇👇👇 이 부분을 추가/수정합니다! 👇👇👇 */
+        color: #000; /* 글씨를 검은색으로 */ 
+        /* 기존의 color: transparent;는 삭제하거나 주석 처리하세요. */
         border: none;
         outline: none;
         font-size: 28px; 
@@ -120,6 +122,7 @@
         font-size: 26px;
         font-weight: 600;
         color: #FFD700; 
+        font-family: "궁서체", "Gungsuh", serif;
         text-shadow: 0 2px 6px rgba(0,0,0,0.9); 
         white-space: nowrap;
     }
@@ -136,6 +139,7 @@
         line-height: 1.6; 
         font-weight: 500;
         color: #FFFFFF; 
+        font-family: "궁서체", "Gungsuh", serif;
         text-shadow: 0 2px 5px rgba(0,0,0,0.9);
     }
 
@@ -175,7 +179,7 @@
 
 <div class="canvas" id="canvas">
 
-    <div class="bg"><img src="https://raw.githubusercontent.com/gwajeong8-glitch/noblesse-time/main/backgrounds.png" alt="backgrounds"></div>
+    <div class="bg"><img src="bok.png" alt="backgrounds"></div>
 
     <div id="sidoDisplay" class="display-box">시·도 선택</div>
     <div id="sigunguDisplay" class="display-box">시·군·구 선택</div>
